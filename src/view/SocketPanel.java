@@ -28,6 +28,7 @@ public class SocketPanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 moveSquare(e.getX(), e.getY());
+                System.out.print("X: " + e.getX() + "Y: " + e.getY() + "\n");
             }
         });
 
