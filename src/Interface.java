@@ -1,5 +1,6 @@
+import view.CirclePanel;
+
 import javax.swing.*;
-import view.SocketPanel;
 
 /**
  * Created by Bab on 26-10-2016.
