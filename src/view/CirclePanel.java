@@ -21,6 +21,7 @@ public class CirclePanel extends JPanel implements ActionListener{
 
     public CirclePanel() {
         timer = new Timer(100, this);
+        drawCircle(0,250,400,400,100,10);
     }
 
     public void drawCircle(int fromX, int fromY, int toX, int toY, int radius, int speed){
