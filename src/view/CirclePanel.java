@@ -26,8 +26,17 @@ public class CirclePanel extends JPanel implements ActionListener{
         addCircle(100,100,0,0,100,-4);
     }
 
+    //TODO: implement a method that draws a circle in the specified lane and with the specified text & direction, returning only when done
+    public void sendCircle(int lane, String text, boolean outward) {
+
+    }
+
+    //TODO: implement a method that sets the status for a lane to the specified text
+    public void setStatus(int lane, String text) {
+
+    }
+
     public void updateCircle(){
-        Iterator<Circle> circleIterator = circleList.iterator();
         for (Circle circle: circleList){
             if(circle.getX() < circle.getGoalX()&&circle.getSpeed()>0||circle.getX() > circle.getGoalX()&&circle.getSpeed()<0){
                 circle.setX(circle.getX()+circle.getSpeed());
