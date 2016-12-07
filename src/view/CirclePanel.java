@@ -1,5 +1,7 @@
 package view;
 
+import model.server.Circle;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -22,8 +24,8 @@ public class CirclePanel extends JPanel implements ActionListener{
         circleList = new ArrayList<>();
         timer = new Timer(16, this);
         timer.start();
-        addCircle(0,0,200,400,100,4);
-        addCircle(100,100,0,0,100,-4);
+        addCircle(0,300,200,400,100,4, "Hoi");
+        addCircle(100,100,0,0,100,-4, "Halloo");
     }
 
     //TODO: implement a method that draws a circle in the specified lane and with the specified text & direction, returning only when done
@@ -36,18 +38,48 @@ public class CirclePanel extends JPanel implements ActionListener{
 
     }
 
-    public void updateCircle(){
-        for (Circle circle: circleList){
-            if(circle.getX() < circle.getGoalX()&&circle.getSpeed()>0||circle.getX() > circle.getGoalX()&&circle.getSpeed()<0){
-                circle.setX(circle.getX()+circle.getSpeed());
-                repaint();
+    public void updateCircle() {
+        Iterator<Circle> circleListIterator = circleList.iterator();
+        while (circleListIterator.hasNext()) {
+            Circle circle = circleListIterator.next();
+            if (circle.getSpeed() >= 0) {
+                if (circle.getX() + circle.getSpeed() >= circle.getGoalX()) {
+                    circleListIterator.remove();
+                } else {
+                    circle.setX(circle.getX() + circle.getSpeed());
+                }
+            } else {
+                if (circle.getX() + circle.getSpeed() <= circle.getGoalX()) {
+                    circleListIterator.remove();
+                } else {
+                    circle.setX(circle.getX() + circle.getSpeed());
+                }
             }
+            repaint();
         }
     }
 
-    public void addCircle(int startX, int startY, int toX, int toY, int radius, int speed){
-        Circle circle = new Circle(startX, startY, toX, toY,radius,speed);
+    public void addCircle(int startX, int startY, int toX, int toY, int radius, int speed, String text){
+        Circle circle = new Circle(startX, startY, toX, toY,radius,speed, text);
         circleList.add(circle);
+    }
+
+    public static void drawCenteredText(Graphics g, int x, int y, float size, String text) {
+        // Create a new font with the desired size
+        Font newFont = g.getFont().deriveFont(size);
+        g.setFont(newFont);
+        // Find the size of string s in font f in the current Graphics context g.
+        FontMetrics fm = g.getFontMetrics();
+        java.awt.geom.Rectangle2D rect = fm.getStringBounds(text, g);
+
+        int textHeight = (int) (rect.getHeight());
+        int textWidth = (int) (rect.getWidth());
+
+        // Find the top left and right corner
+        int cornerX = x - (textWidth / 2);
+        int cornerY = y - (textHeight / 2) + fm.getAscent();
+
+        g.drawString(text, cornerX, cornerY);  // Draw the string.
     }
 
     public void actionPerformed(ActionEvent evt){
@@ -65,6 +97,7 @@ public class CirclePanel extends JPanel implements ActionListener{
                 g.fillOval(circle.getX(),circle.getY(),circle.getRadius(),circle.getRadius());
                 g.setColor(Color.BLACK);
                 g.drawOval(circle.getX(),circle.getY(),circle.getRadius(),circle.getRadius());
+                drawCenteredText(g, circle.getCenterX(), circle.getCenterY(), 30f, circle.getText());
             }
         } catch (IOException e) {
             e.printStackTrace();
