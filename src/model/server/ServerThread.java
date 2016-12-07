@@ -23,6 +23,6 @@ public class ServerThread implements Runnable {
      */
     @Override
     public void run() {
-
+        //TODO: Talk to client.
     }
 }
