@@ -1,4 +1,4 @@
-package model.server;
+package model;
 
 import java.util.Timer;
 

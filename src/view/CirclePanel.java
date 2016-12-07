@@ -1,6 +1,6 @@
 package view;
 
-import model.server.Circle;
+import model.Circle;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
