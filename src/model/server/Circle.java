@@ -1,4 +1,4 @@
-package view;
+package model.server;
 
 import java.util.Timer;
 
@@ -12,14 +12,16 @@ public class Circle {
     private int speed;
     private int goalX;
     private int goalY;
+    private String text;
 
-    public Circle(int x, int y, int goalX, int goalY, int radius, int speed) {
+    public Circle(int x, int y, int goalX, int goalY, int radius, int speed, String text) {
         this.x = x;
         this.y = y;
         this.goalX = goalX;
         this.goalY = goalY;
         this.radius = radius;
         this.speed = speed;
+        this.text = text;
     }
 
     public int getX() {
@@ -61,4 +63,12 @@ public class Circle {
     public int getGoalY() {
         return goalY;
     }
+
+    public int getCenterX(){return x + radius/2;}
+
+    public int getCenterY(){return y + radius/2;}
+
+    public String getText() {return text;}
+
+    public void setText(String text) {this.text = text;}
 }
