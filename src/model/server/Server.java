@@ -6,6 +6,7 @@ import java.net.Socket;
 
 public class Server implements Runnable {
     private boolean stopped = false;
+    private static int threadCount = 0;
 
     /**
      * When an object implementing interface <code>Runnable</code> is used
@@ -25,11 +26,28 @@ public class Server implements Runnable {
                     ServerSocket server = new ServerSocket(8080);
                     Socket client = server.accept()
             ) {
-                new Thread(new ServerThread(client)).start();
+                if (!threadsAreFull()) {
+                    addThread();
+                    new Thread(new ServerThread(client)).start();
+                } else {
+                    client.close();
+                }
             } catch (IOException e) {
                 throw new RuntimeException("Error accepting connection", e);
             }
         }
+    }
+
+    public static synchronized void addThread() {
+        threadCount++;
+    }
+
+    public static synchronized void removeThread() {
+        threadCount--;
+    }
+
+    public static synchronized boolean threadsAreFull() {
+        return threadCount > 2;
     }
 
     private synchronized boolean isStopped() {

@@ -1,8 +1,7 @@
 package model.client;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Created by Bab on 30-11-2016.
@@ -30,7 +29,23 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try (Socket server = new Socket(hostName, portNumber)) {
-            //TODO: Talk to server
+            try {
+                PrintStream output = new PrintStream(server.getOutputStream());
+                BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+                //TODO: Get text from user
+                String text = "hoi sebas";
+                //TODO: Send circle with text
+                output.println(text);
+                //TODO: Status: waiting
+                String result = input.readLine();
+                //TODO: Receive circle with result
+            } catch (IOException e) {
+                if (server.isClosed()) {
+                    //TODO: Status: connection dropped
+                } else {
+                    throw new RuntimeException("Error with connection.", e);
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException("Error connecting to host.", e);
         }

@@ -1,5 +1,9 @@
 package model.server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 
 public class ServerThread implements Runnable {
@@ -23,6 +27,21 @@ public class ServerThread implements Runnable {
      */
     @Override
     public void run() {
-        //TODO: Talk to client.
+        try {
+            //TODO: Talk to server
+            PrintStream output = new PrintStream(client.getOutputStream());
+            BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            //TODO: Status: waiting
+            String text = input.readLine();
+            //TODO: Receive circle with text
+            output.println(new StringBuilder(text).reverse().toString());
+            //TODO: Send circle with result
+            //TODO: Status: waiting
+        } catch (IOException e) {
+            //TODO: Status: Disconnected
+        } finally {
+            Server.removeThread();
+        }
+
     }
 }
