@@ -19,15 +19,15 @@ import java.util.Iterator;
  * Created by Sebastian on 20-11-2016.
  */
 public class CirclePanel extends JPanel implements ActionListener{
-    private Timer timer;
 
     public CirclePanel() {
-        timer = new Timer(16, this);
+        Timer timer = new Timer(16, this);
         timer.start();
+        new Circle(100, 100, 500, 500, 100, 1, "HOI");
     }
 
     public void actionPerformed(ActionEvent evt){
-        CircleList.getInstance().updateCircles();
+        repaint();
     }
 
     public static void drawCenteredText(Graphics g, int x, int y, float size, String text) {
@@ -52,15 +52,14 @@ public class CirclePanel extends JPanel implements ActionListener{
     public void paintComponent(Graphics g) {
         try {
             super.paintComponent(g);
+            CircleList.updateCircles();
             BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dikkestinkbeer.jpg"));
             g.drawImage(beer, 0, 0, null);
-            Iterator<Circle> circleListIterator = CircleList.getInstance().getCircleList().iterator();
-            while(circleListIterator.hasNext()){
-                Circle circle = circleListIterator.next();
+            for (Circle circle : CircleList.getCircleList()) {
                 g.setColor(Color.RED);
-                g.fillOval(circle.getX(),circle.getY(),circle.getRadius(),circle.getRadius());
+                g.fillOval(circle.getX(), circle.getY(), circle.getRadius(), circle.getRadius());
                 g.setColor(Color.BLACK);
-                g.drawOval(circle.getX(),circle.getY(),circle.getRadius(),circle.getRadius());
+                g.drawOval(circle.getX(), circle.getY(), circle.getRadius(), circle.getRadius());
                 drawCenteredText(g, circle.getCenterX(), circle.getCenterY(), 30f, circle.getText());
             }
         } catch (IOException e) {

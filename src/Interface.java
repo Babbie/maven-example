@@ -11,7 +11,7 @@ public class Interface {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Interface");
         frame.setContentPane(new Interface().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }

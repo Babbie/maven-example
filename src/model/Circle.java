@@ -23,6 +23,7 @@ public class Circle {
         this.radius = radius;
         this.speed = speed;
         this.text = text;
+        CircleList.addCircle(this);
     }
 
     public boolean hasArrived() {

@@ -12,7 +12,7 @@ public class CircleList {
     private static CircleList circlelist = new CircleList();
 
     private CircleList() {
-        arrayList = new ArrayList<>();;
+        arrayList = new ArrayList<>();
     }
 
     public static CircleList getInstance(){
