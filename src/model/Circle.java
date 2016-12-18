@@ -45,10 +45,6 @@ public class Circle {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getRadius() {
         return radius;
     }
@@ -69,10 +65,6 @@ public class Circle {
         return goalX;
     }
 
-    public int getGoalY() {
-        return goalY;
-    }
-
     public int getCenterX(){return x + radius/2;}
 
     public int getCenterY(){return y + radius/2;}
@@ -80,4 +72,20 @@ public class Circle {
     public String getText() {return text;}
 
     public void setText(String text) {this.text = text;}
+
+    public void update() {
+        if (getSpeed() >= 0) {
+            if (getX() + getSpeed() >= getGoalX()) {
+                setHasArrived();
+            } else {
+                setX(getX() + getSpeed());
+            }
+        } else {
+            if (getX() + getSpeed() <= getGoalX()) {
+                setHasArrived();
+            } else {
+                setX(getX() + getSpeed());
+            }
+        }
+    }
 }

@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,22 +40,7 @@ public class CirclePanel extends JPanel implements ActionListener{
     public void updateCircle() {
         Iterator<Circle> circleListIterator = circleList.iterator();
         while (circleListIterator.hasNext()) {
-            Circle circle = circleListIterator.next();
-            if (circle.getSpeed() >= 0) {
-                if (circle.getX() + circle.getSpeed() >= circle.getGoalX()) {
-                    circle.setHasArrived();
-                    circleListIterator.remove();
-                } else {
-                    circle.setX(circle.getX() + circle.getSpeed());
-                }
-            } else {
-                if (circle.getX() + circle.getSpeed() <= circle.getGoalX()) {
-                    circle.setHasArrived();
-                    circleListIterator.remove();
-                } else {
-                    circle.setX(circle.getX() + circle.getSpeed());
-                }
-            }
+
             repaint();
         }
     }
@@ -65,7 +51,7 @@ public class CirclePanel extends JPanel implements ActionListener{
         g.setFont(newFont);
         // Find the size of string s in font f in the current Graphics context g.
         FontMetrics fm = g.getFontMetrics();
-        java.awt.geom.Rectangle2D rect = fm.getStringBounds(text, g);
+        Rectangle2D rect = fm.getStringBounds(text, g);
 
         int textHeight = (int) (rect.getHeight());
         int textWidth = (int) (rect.getWidth());
