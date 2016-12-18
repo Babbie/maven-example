@@ -1,6 +1,7 @@
 package view;
 
 import model.Circle;
+import model.CircleList;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,15 +35,7 @@ public class CirclePanel extends JPanel implements ActionListener{
     }
 
     public void actionPerformed(ActionEvent evt){
-        updateCircle();
-    }
-
-    public void updateCircle() {
-        Iterator<Circle> circleListIterator = circleList.iterator();
-        while (circleListIterator.hasNext()) {
-
-            repaint();
-        }
+        CircleList.updateCircles();
     }
 
     public static void drawCenteredText(Graphics g, int x, int y, float size, String text) {

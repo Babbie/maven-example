@@ -1,0 +1,36 @@
+package model;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Created by Sebastian on 18-12-2016.
+ */
+public class CircleList {
+    protected static ArrayList<Circle> arrayList;
+
+    private static CircleList circlelist = new CircleList();
+
+    private CircleList() {
+        arrayList = new ArrayList<>();;
+    }
+
+    public static CircleList getInstance(){
+        return circlelist;
+    }
+
+    protected static void addCircle(Circle circle){
+        arrayList.add(circle);
+    }
+
+    public static void updateCircles(){
+        Iterator<Circle> circleListIterator = arrayList.iterator();
+        while (circleListIterator.hasNext()) {
+            Circle circle = circleListIterator.next();
+            circle.update();
+            if(circle.hasArrived()){
+                circleListIterator.remove();
+            }            
+        }
+    }
+}
