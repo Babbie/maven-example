@@ -24,18 +24,16 @@ public class CirclePanel extends JPanel implements ActionListener{
         circleList = new ArrayList<>();
         timer = new Timer(16, this);
         timer.start();
-        addCircle(0,300,200,400,100,4, "Hoi");
-        addCircle(100,100,0,0,100,-4, "Halloo");
+        Circle circle = new Circle(100, 100, 0, 0,100,-4, "Halloo");
+        addCircle(circle);
     }
 
-    //TODO: implement a method that draws a circle in the specified lane and with the specified text & direction, returning only when done
-    public void sendCircle(int lane, String text, boolean outward) {
-
+    public void addCircle(Circle circle){
+        circleList.add(circle);
     }
 
-    //TODO: implement a method that sets the status for a lane to the specified text
-    public void setStatus(int lane, String text) {
-
+    public void actionPerformed(ActionEvent evt){
+        updateCircle();
     }
 
     public void updateCircle() {
@@ -44,12 +42,14 @@ public class CirclePanel extends JPanel implements ActionListener{
             Circle circle = circleListIterator.next();
             if (circle.getSpeed() >= 0) {
                 if (circle.getX() + circle.getSpeed() >= circle.getGoalX()) {
+                    circle.setHasArrived();
                     circleListIterator.remove();
                 } else {
                     circle.setX(circle.getX() + circle.getSpeed());
                 }
             } else {
                 if (circle.getX() + circle.getSpeed() <= circle.getGoalX()) {
+                    circle.setHasArrived();
                     circleListIterator.remove();
                 } else {
                     circle.setX(circle.getX() + circle.getSpeed());
@@ -57,11 +57,6 @@ public class CirclePanel extends JPanel implements ActionListener{
             }
             repaint();
         }
-    }
-
-    public void addCircle(int startX, int startY, int toX, int toY, int radius, int speed, String text){
-        Circle circle = new Circle(startX, startY, toX, toY,radius,speed, text);
-        circleList.add(circle);
     }
 
     public static void drawCenteredText(Graphics g, int x, int y, float size, String text) {
@@ -80,10 +75,6 @@ public class CirclePanel extends JPanel implements ActionListener{
         int cornerY = y - (textHeight / 2) + fm.getAscent();
 
         g.drawString(text, cornerX, cornerY);  // Draw the string.
-    }
-
-    public void actionPerformed(ActionEvent evt){
-        updateCircle();
     }
 
     @Override

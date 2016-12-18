@@ -13,6 +13,7 @@ public class Circle {
     private int goalX;
     private int goalY;
     private String text;
+    private boolean hasArrived = false;
 
     public Circle(int x, int y, int goalX, int goalY, int radius, int speed, String text) {
         this.x = x;
@@ -22,6 +23,14 @@ public class Circle {
         this.radius = radius;
         this.speed = speed;
         this.text = text;
+    }
+
+    public boolean hasArrived() {
+        return hasArrived;
+    }
+
+    public void setHasArrived() {
+        this.hasArrived = true;
     }
 
     public int getX() {
