@@ -7,7 +7,7 @@ import java.util.Iterator;
  * Created by Sebastian on 18-12-2016.
  */
 public class CircleList {
-    protected static ArrayList<Circle> arrayList;
+    private static ArrayList<Circle> arrayList;
 
     private static CircleList circlelist = new CircleList();
 
@@ -19,7 +19,11 @@ public class CircleList {
         return circlelist;
     }
 
-    protected static void addCircle(Circle circle){
+    public static ArrayList<Circle> getCircleList() {
+        return arrayList;
+    }
+
+    public static void addCircle(Circle circle){
         arrayList.add(circle);
     }
 

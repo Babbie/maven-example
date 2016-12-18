@@ -20,22 +20,14 @@ import java.util.Iterator;
  */
 public class CirclePanel extends JPanel implements ActionListener{
     private Timer timer;
-    private ArrayList<Circle> circleList;
 
     public CirclePanel() {
-        circleList = new ArrayList<>();
         timer = new Timer(16, this);
         timer.start();
-        Circle circle = new Circle(100, 100, 0, 0,100,-4, "Halloo");
-        addCircle(circle);
-    }
-
-    public void addCircle(Circle circle){
-        circleList.add(circle);
     }
 
     public void actionPerformed(ActionEvent evt){
-        CircleList.updateCircles();
+        CircleList.getInstance().updateCircles();
     }
 
     public static void drawCenteredText(Graphics g, int x, int y, float size, String text) {
@@ -62,7 +54,9 @@ public class CirclePanel extends JPanel implements ActionListener{
             super.paintComponent(g);
             BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dikkestinkbeer.jpg"));
             g.drawImage(beer, 0, 0, null);
-            for (Circle circle: circleList){
+            Iterator<Circle> circleListIterator = CircleList.getInstance().getCircleList().iterator();
+            while(circleListIterator.hasNext()){
+                Circle circle = circleListIterator.next();
                 g.setColor(Color.RED);
                 g.fillOval(circle.getX(),circle.getY(),circle.getRadius(),circle.getRadius());
                 g.setColor(Color.BLACK);
