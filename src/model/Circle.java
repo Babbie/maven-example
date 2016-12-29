@@ -1,27 +1,36 @@
 package model;
 
-import java.util.Timer;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
 
 /**
  * Created by Sebastian on 24-11-2016.
  */
-public class Circle {
+public class Circle extends Observable implements ActionListener {
     private int x;
-    private int y;
+    private Lane lane;
     private int radius;
     private int speed;
     private int goalX;
-    private int goalY;
     private String text;
     private boolean hasArrived = false;
 
-    public Circle(int x, int y, int goalX, int goalY, int radius, int speed, String text) {
-        this.x = x;
-        this.y = y;
-        this.goalX = goalX;
-        this.goalY = goalY;
-        this.radius = radius;
-        this.speed = speed;
+    public Circle(boolean outgoing, Lane lane, String text) {
+        Timer timer = new Timer(16, this);
+        timer.start();
+        if (outgoing) {
+            this.x = 100;
+            this.goalX = 500;
+            this.speed = 10;
+        } else {
+            this.x = 500;
+            this.goalX = 100;
+            this.speed = -10;
+        }
+        this.radius = 50;
+        this.lane = lane;
         this.text = text;
         CircleList.addCircle(this);
     }
@@ -43,7 +52,7 @@ public class Circle {
     }
 
     public int getY() {
-        return y;
+        return lane.yPos;
     }
 
     public int getRadius() {
@@ -68,11 +77,15 @@ public class Circle {
 
     public int getCenterX(){return x + radius/2;}
 
-    public int getCenterY(){return y + radius/2;}
+    public int getCenterY(){return lane.yPos + radius/2;}
 
     public String getText() {return text;}
 
     public void setText(String text) {this.text = text;}
+
+    public void delete() {
+        CircleList.removeCircle(this);
+    }
 
     public void update() {
         if (getSpeed() >= 0) {
@@ -88,5 +101,17 @@ public class Circle {
                 setX(getX() + getSpeed());
             }
         }
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        update();
     }
 }

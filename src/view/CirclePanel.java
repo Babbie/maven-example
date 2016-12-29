@@ -2,6 +2,7 @@ package view;
 
 import model.Circle;
 import model.CircleList;
+import model.Lane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,21 +14,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 
 
 /**
  * Created by Sebastian on 20-11-2016.
  */
-public class CirclePanel extends JPanel implements ActionListener{
+public class CirclePanel extends JPanel implements Observer {
 
     public CirclePanel() {
-        Timer timer = new Timer(16, this);
-        timer.start();
-        new Circle(100, 100, 500, 500, 100, 1, "HOI");
-    }
-
-    public void actionPerformed(ActionEvent evt){
-        repaint();
+        new Circle(true, Lane.First, "HOI");
     }
 
     public static void drawCenteredText(Graphics g, int x, int y, float size, String text) {
@@ -52,7 +49,6 @@ public class CirclePanel extends JPanel implements ActionListener{
     public void paintComponent(Graphics g) {
         try {
             super.paintComponent(g);
-            CircleList.updateCircles();
             BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dikkestinkbeer.jpg"));
             g.drawImage(beer, 0, 0, null);
             for (Circle circle : CircleList.getCircleList()) {
@@ -65,5 +61,19 @@ public class CirclePanel extends JPanel implements ActionListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        repaint();
     }
 }
