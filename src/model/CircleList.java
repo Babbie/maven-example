@@ -37,4 +37,8 @@ public class CircleList {
             }            
         }
     }
+
+    public static void removeCircle(Circle circle) {
+        arrayList.remove(circle);
+    }
 }

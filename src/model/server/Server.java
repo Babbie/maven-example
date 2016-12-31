@@ -1,5 +1,7 @@
 package model.server;
 
+import model.Lane;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,12 +25,12 @@ public class Server implements Runnable {
     public synchronized void run() {
         while (!isStopped()) {
             try (
-                    ServerSocket server = new ServerSocket(8080);
-                    Socket client = server.accept()
+                ServerSocket server = new ServerSocket(8080);
+                Socket client = server.accept()
             ) {
                 if (!threadsAreFull()) {
                     addThread();
-                    new Thread(new ServerThread(client)).start();
+                    new Thread(new ServerThread(client, Lane.values()[getThreadCount()])).start();
                 } else {
                     client.close();
                 }
@@ -46,8 +48,12 @@ public class Server implements Runnable {
         threadCount--;
     }
 
+    public static synchronized int getThreadCount() {
+        return threadCount;
+    }
+
     public static synchronized boolean threadsAreFull() {
-        return threadCount > 2;
+        return threadCount == 2;
     }
 
     private synchronized boolean isStopped() {
