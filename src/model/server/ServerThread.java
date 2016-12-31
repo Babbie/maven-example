@@ -36,7 +36,6 @@ public class ServerThread implements Runnable, Observer {
     @Override
     public void run() {
         try {
-            //TODO: Talk to server
             PrintStream output = new PrintStream(client.getOutputStream());
             BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
             //TODO: Status: waiting

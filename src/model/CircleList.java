@@ -27,7 +27,7 @@ public class CircleList {
         arrayList.add(circle);
     }
 
-    public static void updateCircles(){
+    public synchronized static void updateCircles(){
         Iterator<Circle> circleListIterator = arrayList.iterator();
         while (circleListIterator.hasNext()) {
             Circle circle = circleListIterator.next();

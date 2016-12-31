@@ -1,18 +1,26 @@
 package model.client;
 
+import model.Circle;
+import model.Lane;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Bab on 30-11-2016.
  */
-public class Client implements Runnable {
+public class Client implements Runnable, Observer {
     private String hostName;
     private int portNumber;
+    private String text;
+    private boolean arrived = false;
 
-    public Client(String hostName, int portNumber) throws IOException {
+    public Client(String hostName, int portNumber, String text) throws IOException {
         this.hostName = hostName;
         this.portNumber = portNumber;
+        this.text = text;
     }
 
     /**
@@ -32,13 +40,20 @@ public class Client implements Runnable {
             try {
                 PrintStream output = new PrintStream(server.getOutputStream());
                 BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-                //TODO: Get text from user
-                String text = "hoi sebas";
-                //TODO: Send circle with text
+                Circle outgoing = new Circle(true, Lane.First, text);
+                outgoing.addObserver(this);
+                while (!arrived) {
+                    //busywaiting
+                }
+                arrived = false;
                 output.println(text);
-                //TODO: Status: waiting
                 String result = input.readLine();
-                //TODO: Receive circle with result
+                Circle incoming = new Circle(false, Lane.First, result);
+                incoming.addObserver(this);
+                while (!arrived) {
+                    //busywaiting
+                }
+                arrived = false;
             } catch (IOException e) {
                 if (server.isClosed()) {
                     //TODO: Status: connection dropped
@@ -48,6 +63,29 @@ public class Client implements Runnable {
             }
         } catch (IOException e) {
             throw new RuntimeException("Error connecting to host.", e);
+        }
+    }
+
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (((Circle)o).hasArrived()) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                arrived = true;
+                ((Circle)o).delete();
+            }
         }
     }
 }

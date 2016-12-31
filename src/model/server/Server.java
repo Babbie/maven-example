@@ -9,6 +9,12 @@ import java.net.Socket;
 public class Server implements Runnable {
     private boolean stopped = false;
     private static int threadCount = 0;
+    private static int port;
+    private static Object lock = new Object();
+
+    public Server(int port) {
+        this.port = port;
+    }
 
     /**
      * When an object implementing interface <code>Runnable</code> is used
@@ -25,7 +31,7 @@ public class Server implements Runnable {
     public synchronized void run() {
         while (!isStopped()) {
             try (
-                ServerSocket server = new ServerSocket(8080);
+                ServerSocket server = new ServerSocket(port);
                 Socket client = server.accept()
             ) {
                 if (!threadsAreFull()) {
@@ -40,20 +46,28 @@ public class Server implements Runnable {
         }
     }
 
-    public static synchronized void addThread() {
-        threadCount++;
+    public static void addThread() {
+        synchronized (lock) {
+            threadCount++;
+        }
     }
 
-    public static synchronized void removeThread() {
-        threadCount--;
+    public static void removeThread() {
+        synchronized (lock) {
+            threadCount--;
+        }
     }
 
-    public static synchronized int getThreadCount() {
-        return threadCount;
+    public static int getThreadCount() {
+        synchronized (lock) {
+            return threadCount;
+        }
     }
 
-    public static synchronized boolean threadsAreFull() {
-        return threadCount == 2;
+    public static boolean threadsAreFull() {
+        synchronized (lock) {
+            return threadCount == 2;
+        }
     }
 
     private synchronized boolean isStopped() {

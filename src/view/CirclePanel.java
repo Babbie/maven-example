@@ -21,9 +21,11 @@ import java.util.Observer;
 /**
  * Created by Sebastian on 20-11-2016.
  */
-public class CirclePanel extends JPanel implements Observer {
+public class CirclePanel extends JPanel implements ActionListener {
 
     public CirclePanel() {
+        Timer timer = new Timer(16, this);
+        timer.start();
         new Circle(true, Lane.First, "HOI");
     }
 
@@ -49,6 +51,7 @@ public class CirclePanel extends JPanel implements Observer {
     public void paintComponent(Graphics g) {
         try {
             super.paintComponent(g);
+            CircleList.updateCircles();
             BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dikkestinkbeer.jpg"));
             g.drawImage(beer, 0, 0, null);
             for (Circle circle : CircleList.getCircleList()) {
@@ -64,16 +67,12 @@ public class CirclePanel extends JPanel implements Observer {
     }
 
     /**
-     * This method is called whenever the observed object is changed. An
-     * application calls an <tt>Observable</tt> object's
-     * <code>notifyObservers</code> method to have all the object's
-     * observers notified of the change.
+     * Invoked when an action occurs.
      *
-     * @param o   the observable object.
-     * @param arg an argument passed to the <code>notifyObservers</code>
+     * @param e
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public void actionPerformed(ActionEvent e) {
         repaint();
     }
 }

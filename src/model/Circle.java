@@ -1,5 +1,7 @@
 package model;
 
+import view.CirclePanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +20,6 @@ public class Circle extends Observable implements ActionListener {
     private boolean hasArrived = false;
 
     public Circle(boolean outgoing, Lane lane, String text) {
-        Timer timer = new Timer(16, this);
-        timer.start();
         if (outgoing) {
             this.x = 100;
             this.goalX = 500;
