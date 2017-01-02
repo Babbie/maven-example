@@ -40,7 +40,7 @@ public class Client implements Runnable, Observer {
             try {
                 PrintStream output = new PrintStream(server.getOutputStream());
                 BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-                Circle outgoing = new Circle(true, Lane.First, text);
+                Circle outgoing = new Circle(false, Lane.Second, text);
                 outgoing.addObserver(this);
                 while (!arrived) {
                     //busywaiting
@@ -48,7 +48,7 @@ public class Client implements Runnable, Observer {
                 arrived = false;
                 output.println(text);
                 String result = input.readLine();
-                Circle incoming = new Circle(false, Lane.First, result);
+                Circle incoming = new Circle(true, Lane.Second, result);
                 incoming.addObserver(this);
                 while (!arrived) {
                     //busywaiting

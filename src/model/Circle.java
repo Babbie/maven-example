@@ -15,9 +15,10 @@ public class Circle extends Observable implements ActionListener {
     private int goalX;
     private String text;
     private boolean hasArrived = false;
+    private boolean toDelete = false;
 
-    public Circle(boolean outgoing, Lane lane, String text) {
-        if (outgoing) {
+    public Circle(boolean rightward, Lane lane, String text) {
+        if (rightward) {
             this.x = 100;
             this.goalX = 500;
             this.speed = 10;
@@ -81,7 +82,11 @@ public class Circle extends Observable implements ActionListener {
     public void setText(String text) {this.text = text;}
 
     public void delete() {
-        CircleList.removeCircle(this);
+        toDelete = true;
+    }
+
+    public boolean isDone() {
+        return toDelete;
     }
 
     public void update() {

@@ -31,8 +31,9 @@ public class CircleList {
         Iterator<Circle> circleListIterator = arrayList.iterator();
         while (circleListIterator.hasNext()) {
             Circle circle = circleListIterator.next();
-            synchronized (circle) {
-                circle.update();
+            circle.update();
+            if (circle.isDone()) {
+                circleListIterator.remove();
             }
         }
     }

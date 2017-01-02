@@ -40,6 +40,7 @@ public class ServerThread implements Runnable, Observer {
             BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
             //TODO: Status: waiting
             String text = input.readLine();
+            System.out.println(text);
             Circle incoming = new Circle(false, lane, text);
             incoming.addObserver(this);
             while (!arrived) {
