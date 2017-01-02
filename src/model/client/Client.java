@@ -78,13 +78,15 @@ public class Client implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (((Circle)o).hasArrived()) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                arrived = true;
-                ((Circle)o).delete();
+            synchronized (o) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    arrived = true;
+                    ((Circle) o).delete();
+                }
             }
         }
     }
