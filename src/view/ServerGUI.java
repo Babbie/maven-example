@@ -7,7 +7,7 @@ import javax.swing.*;
 /**
  * Created by Sebastian on 31-12-2016.
  */
-public class GUI {
+public class ServerGUI {
     private JPanel panel1;
     private JTextField Lane1;
     private JTextField Lane2;
@@ -16,8 +16,8 @@ public class GUI {
     private JPanel CirclePanel;
 
     public static void init() {
-        JFrame frame = new JFrame("GUI");
-        frame.setContentPane(new GUI().panel1);
+        JFrame frame = new JFrame("ServerGUI");
+        frame.setContentPane(new ServerGUI().panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

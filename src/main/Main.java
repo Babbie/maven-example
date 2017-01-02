@@ -1,7 +1,7 @@
 package main;
 
 import view.ClientGUI;
-import view.GUI;
+import view.ServerGUI;
 
 import javax.swing.*;
 
@@ -15,7 +15,7 @@ public class Main {
         } else if (args[0].equals("client")) {
             ClientGUI.init();
         } else if (args[0].equals("server")) {
-            GUI.init();
+            ServerGUI.init();
         }
     }
 }
