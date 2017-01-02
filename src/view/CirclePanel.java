@@ -17,7 +17,8 @@ import java.io.IOException;
 /**
  * Created by Sebastian on 20-11-2016.
  */
-public class CirclePanel extends JPanel implements ActionListener {
+public abstract class CirclePanel extends JPanel implements ActionListener {
+    protected String bgName;
 
     public CirclePanel() {
         Timer timer = new Timer(16, this);
@@ -48,8 +49,8 @@ public class CirclePanel extends JPanel implements ActionListener {
         try {
             super.paintComponent(g);
             CircleList.updateCircles();
-            BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("ServerPanel.png"));
-            g.drawImage(beer, 0, 0, null);
+            BufferedImage bg = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream(bgName));
+            g.drawImage(bg, 0, 0, null);
             for (Circle circle : CircleList.getCircleList()) {
                 g.setColor(Color.RED);
                 g.fillOval(circle.getX(), circle.getY(), circle.getRadius(), circle.getRadius());
