@@ -12,10 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
 
 
 /**
@@ -52,7 +48,7 @@ public class CirclePanel extends JPanel implements ActionListener {
         try {
             super.paintComponent(g);
             CircleList.updateCircles();
-            BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("dikkestinkbeer.jpg"));
+            BufferedImage beer = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("ServerPanel.png"));
             g.drawImage(beer, 0, 0, null);
             for (Circle circle : CircleList.getCircleList()) {
                 g.setColor(Color.RED);
