@@ -7,6 +7,10 @@
     </constraints>
     <properties>
       <enabled value="true"/>
+      <maximumSize width="550" height="500"/>
+      <minimumSize width="550" height="500"/>
+      <opaque value="true"/>
+      <preferredSize width="550" height="500"/>
     </properties>
     <border type="none"/>
     <children>
