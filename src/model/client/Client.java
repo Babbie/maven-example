@@ -43,15 +43,25 @@ public class Client implements Runnable, Observer {
                 Circle outgoing = new Circle(false, Lane.Second, text);
                 outgoing.addObserver(this);
                 while (!arrived) {
-                    //busywaiting
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        //busywaiting
+                    }
                 }
-                arrived = false;
                 output.println(text);
+                arrived = false;
+                output.flush();
+                System.out.println("awaiting result");
                 String result = input.readLine();
                 Circle incoming = new Circle(true, Lane.Second, result);
                 incoming.addObserver(this);
                 while (!arrived) {
-                    //busywaiting
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        //busywaiting
+                    }
                 }
                 arrived = false;
             } catch (IOException e) {

@@ -36,32 +36,47 @@ public class ServerThread implements Runnable, Observer {
     @Override
     public void run() {
         try {
+            System.out.println("thread running!");
             PrintStream output = new PrintStream(client.getOutputStream());
             BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
             //TODO: Status: waiting
+            System.out.println("awaiting input");
             String text = input.readLine();
             System.out.println(text);
             Circle incoming = new Circle(false, lane, text);
             incoming.addObserver(this);
             while (!arrived) {
-                //busywaiting
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    //busywaiting
+                }
             }
             arrived = false;
             String reverseText = new StringBuilder(text).reverse().toString();
             Circle outgoing = new Circle(true, lane, reverseText);
             outgoing.addObserver(this);
             while (!arrived) {
-                //busywaiting
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    //busywaiting
+                }
             }
             arrived = false;
             output.println(reverseText);
+            output.flush();
             //TODO: Status: waiting
         } catch (IOException e) {
-            //TODO: Status: Disconnected
+            //TODO: Status: disconnected
         } finally {
+            try {
+                client.close();
+            } catch (IOException e) {
+                //Nothing, client is closed
+            }
             Server.removeThread();
         }
-
     }
 
     /**

@@ -30,12 +30,14 @@ public class Server implements Runnable {
     @Override
     public synchronized void run() {
         while (!isStopped()) {
-            try (
-                ServerSocket server = new ServerSocket(port);
-                Socket client = server.accept()
-            ) {
+            try {
+                ServerSocket server = new ServerSocket(port + getThreadCount());
+                Socket client = server.accept();
+                System.out.println("checking threads");
                 if (!threadsAreFull()) {
+                    System.out.println("adding thread");
                     addThread();
+                    System.out.println("running thread");
                     new Thread(new ServerThread(client, Lane.values()[getThreadCount()])).start();
                 } else {
                     client.close();
