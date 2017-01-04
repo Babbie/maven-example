@@ -27,7 +27,7 @@ public class Circle extends Observable implements ActionListener {
             this.goalX = 100;
             this.speed = -10;
         }
-        this.radius = 50;
+        this.radius = 140;
         this.lane = lane;
         this.text = text;
         CircleList.addCircle(this);
