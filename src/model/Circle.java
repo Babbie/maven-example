@@ -95,10 +95,6 @@ public class Circle extends Observable implements ActionListener {
         return goalX;
     }
 
-    public int getCenterX(){return x + radius/2;}
-
-    public int getCenterY(){return lane.yPos + radius/2;}
-
     public String getText() {return text;}
 
     public void setText(String text) {this.text = text;}
