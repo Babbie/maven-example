@@ -24,6 +24,7 @@ public class ClientGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ClientGUI.start();
+                StartClient.setVisible(false);
             }
         });
     }
