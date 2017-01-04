@@ -40,7 +40,7 @@ public class Client implements Runnable, Observer {
             try {
                 PrintStream output = new PrintStream(server.getOutputStream());
                 BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-                Circle outgoing = new Circle(false, Lane.Second, text);
+                Circle outgoing = new Circle(true, true, Lane.Second, text);
                 outgoing.addObserver(this);
                 while (!arrived) {
                     try {
@@ -54,7 +54,7 @@ public class Client implements Runnable, Observer {
                 output.flush();
                 System.out.println("awaiting result");
                 String result = input.readLine();
-                Circle incoming = new Circle(true, Lane.Second, result);
+                Circle incoming = new Circle(false, true, Lane.Second, result);
                 incoming.addObserver(this);
                 while (!arrived) {
                     try {

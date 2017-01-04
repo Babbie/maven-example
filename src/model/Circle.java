@@ -17,16 +17,29 @@ public class Circle extends Observable implements ActionListener {
     private boolean hasArrived = false;
     private boolean toDelete = false;
 
-    public Circle(boolean rightward, Lane lane, String text) {
-        if (rightward) {
-            this.x = 100;
-            this.goalX = 500;
-            this.speed = 10;
+    public Circle(boolean outgoing, boolean client, Lane lane, String text) {
+        if (client) {
+            if (outgoing) {
+                this.x = 350;
+                this.goalX = -100;
+                this.speed = -10;
+            } else {
+                this.x = -100;
+                this.goalX = 350;
+                this.speed = 10;
+            }
         } else {
-            this.x = 500;
-            this.goalX = 100;
-            this.speed = -10;
+            if (outgoing) {
+                this.x = 100;
+                this.goalX = 600;
+                this.speed = 10;
+            } else {
+                this.x = 600;
+                this.goalX = 100;
+                this.speed = -10;
+            }
         }
+
         this.radius = 140;
         this.lane = lane;
         this.text = text;

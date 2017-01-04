@@ -43,7 +43,7 @@ public class ServerThread implements Runnable, Observer {
             System.out.println("awaiting input");
             String text = input.readLine();
             System.out.println(text);
-            Circle incoming = new Circle(false, lane, text);
+            Circle incoming = new Circle(false, false, lane, text);
             incoming.addObserver(this);
             while (!arrived) {
                 try {
@@ -54,7 +54,7 @@ public class ServerThread implements Runnable, Observer {
             }
             arrived = false;
             String reverseText = new StringBuilder(text).reverse().toString();
-            Circle outgoing = new Circle(true, lane, reverseText);
+            Circle outgoing = new Circle(true, false, lane, reverseText);
             outgoing.addObserver(this);
             while (!arrived) {
                 try {
