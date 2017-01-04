@@ -33,6 +33,11 @@ public class Circle extends Observable implements ActionListener {
         CircleList.addCircle(this);
     }
 
+    public int getOvalWidth(){
+        int width = (int) Math.ceil(radius * (text.length()/8f));
+        return width > radius ? width : radius ;
+    }
+
     public boolean hasArrived() {
         return hasArrived;
     }
