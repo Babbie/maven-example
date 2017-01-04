@@ -13,6 +13,7 @@ public class ClientGUI {
     private JTextField ClientLane;
     private JPanel CirclePanel;
     private JPanel TextPanel;
+    private JButton StartStopClient;
 
     public static void init() {
         JFrame frame = new JFrame("ClientGUI");

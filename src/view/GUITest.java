@@ -12,6 +12,9 @@ public class GUITest {
     private JTextField Lane2;
     private JTextField Lane3;
     private JPanel CirclePanel;
+    private JButton StartStopLane3;
+    private JButton StartStopLane2;
+    private JButton StartStopLane1;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("GUITest");
