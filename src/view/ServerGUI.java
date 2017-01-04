@@ -13,9 +13,9 @@ public class ServerGUI {
     private JTextField Lane2;
     private JTextField Lane3;
     private JPanel TextPanel;
-    private JButton StartStopLane1;
-    private JButton StartStopLane2;
-    private JButton StartStopLane3;
+    private JButton StartLane1;
+    private JButton StartLane2;
+    private JButton StartLane3;
     private JPanel CirclePanel;
 
     public static void init() {
