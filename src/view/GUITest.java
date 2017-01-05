@@ -20,13 +20,12 @@ public class GUITest {
     public static void main(String[] args) {
         JFrame frame = new JFrame("GUITest");
         frame.setContentPane(new GUITest().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(false);
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 }
