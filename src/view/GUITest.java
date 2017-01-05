@@ -3,7 +3,8 @@ package view;
 import javax.swing.*;
 
 /**
- * Created by Sebastian on 2-1-2017.
+ * This class together with the GUI test form are used for testing purposes since CirclePanel bugs the intellij Form
+ * designer
  */
 public class GUITest {
     private JPanel panel1;

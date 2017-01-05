@@ -14,7 +14,8 @@ import java.io.IOException;
 import static main.Utility.isValidPort;
 
 /**
- * Created by Sebastian on 31-12-2016.
+ * Class linked to the ServerGUI form.
+ * The class creates the JFrame, handles the input and starts the server thread
  */
 public class ServerGUI implements ThreadListener {
     private static JFrame frame;

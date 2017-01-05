@@ -5,7 +5,7 @@ import main.Lane;
 import java.util.Observable;
 
 /**
- * Created by Sebastian on 24-11-2016.
+ * Class representing a circle
  */
 public class Circle extends Observable {
     private int x;
@@ -17,6 +17,7 @@ public class Circle extends Observable {
     private boolean hasArrived = false;
     private boolean toDelete = false;
 
+    //Create a circle with the appropriate direction, lane, speed, goal and text
     public Circle(boolean outgoing, boolean client, Lane lane, String text) {
         if (client) {
             if (outgoing) {
@@ -107,6 +108,7 @@ public class Circle extends Observable {
         return toDelete;
     }
 
+    //Update the position of the circle by adding its speed to its current XPos
     public void update() {
         if (getSpeed() >= 0) {
             if (getX() + getSpeed() >= getGoalX()) {

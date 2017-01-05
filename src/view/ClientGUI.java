@@ -13,7 +13,8 @@ import static main.Utility.isValidIP;
 import static main.Utility.isValidPort;
 
 /**
- * Created by Sebastian on 2-1-2017.
+ * Class linked to the ClientGUI form.
+ * The class creates the JFrame, handles the input dialogs and starts the client.
  */
 public class ClientGUI implements ThreadListener {
     private static JFrame frame;
@@ -34,6 +35,7 @@ public class ClientGUI implements ThreadListener {
         });
     }
 
+    //Method called on initialization of the frame
     public static void init() {
         frame = new JFrame("ClientGUI");
         frame.setContentPane(new ClientGUI().panel1);
@@ -43,6 +45,7 @@ public class ClientGUI implements ThreadListener {
         frame.setResizable(false);
     }
 
+    //Method called on pressing the start button. It takes care of all of the input dialogs
     private void start() {
         String ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
         while (!isValidIP(ip)) {
@@ -55,6 +58,8 @@ public class ClientGUI implements ThreadListener {
             port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
         }
         String text = JOptionPane.showInputDialog(frame, "Enter the text to submit.", "", JOptionPane.QUESTION_MESSAGE);
+
+        //Start the client thread
         Client clientThread = new Client(ip, Integer.parseInt(port), text);
         clientThread.start();
         clientThread.addListener(this);
