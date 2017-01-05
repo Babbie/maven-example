@@ -38,7 +38,7 @@ public class Client extends LaneThread implements Observer {
                 BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
                 setMessage("Sending input...");
                 Circle outgoing = new Circle(true, true, lane, text);
-                outgoing.standStill(60);
+                outgoing.standStill(120);
                 outgoing.addObserver(this);
                 while (!circleDone) {
                     try {
@@ -54,7 +54,7 @@ public class Client extends LaneThread implements Observer {
                 setMessage("Awaiting result...");
                 String result = input.readLine();
                 Circle incoming = new Circle(false, true, lane, result);
-                incoming.standStill(60);
+                incoming.standStill(120);
                 incoming.addObserver(this);
                 while (!circleDone) {
                     try {
@@ -95,7 +95,7 @@ public class Client extends LaneThread implements Observer {
             circleDone = true;
         }
         if (circle.hasArrived()) {
-            circle.standStill(60);
+            circle.standStill(120);
             circleArrived = true;
         }
     }

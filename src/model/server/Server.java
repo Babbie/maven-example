@@ -57,7 +57,7 @@ public class Server extends LaneThread implements Observer {
             String text = input.readLine();
             Circle incoming = new Circle(false, false, lane, text);
             incoming.addObserver(this);
-            incoming.standStill(60);
+            incoming.standStill(120);
             while (!circleDone) {
                 try {
                     Thread.sleep(1);
@@ -71,7 +71,7 @@ public class Server extends LaneThread implements Observer {
             String reverseText = new StringBuilder(text).reverse().toString();
             Circle outgoing = new Circle(true, false, lane, reverseText);
             outgoing.addObserver(this);
-            outgoing.standStill(60);
+            outgoing.standStill(120);
             while (!circleDone) {
                 try {
                     Thread.sleep(1);
@@ -112,7 +112,7 @@ public class Server extends LaneThread implements Observer {
             circleDone = true;
         }
         if (circle.hasArrived()) {
-            circle.standStill(60);
+            circle.standStill(120);
             circleArrived = true;
         }
     }
