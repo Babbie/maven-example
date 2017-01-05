@@ -26,22 +26,22 @@ public class Circle extends Observable {
 
         if (client) {
             if (outgoing) {
-                this.x = 450;
-                this.goalX = -radius*2;
+                this.x = 450-radius;
+                this.goalX = -radius;
                 this.speed = -10;
             } else {
-                this.x = -2*radius-100;
-                this.goalX = 450-radius*2;
+                this.x = -radius;
+                this.goalX = 450-radius;
                 this.speed = 10;
             }
         } else {
             if (outgoing) {
-                this.x = 0;
-                this.goalX = 400+radius*2;
+                this.x = radius;
+                this.goalX = 450+radius;
                 this.speed = 10;
             } else {
-                this.x = 600;
-                this.goalX = 0;
+                this.x = 450+radius;
+                this.goalX = radius;
                 this.speed = -10;
             }
         }
