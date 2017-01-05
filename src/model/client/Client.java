@@ -16,7 +16,8 @@ public class Client extends LaneThread implements Observer {
     private String hostName;
     private int portNumber;
     private String text;
-    private boolean arrived = false;
+    private boolean circleDone = false;
+    private boolean circleArrived = false;
 
     public Client(String hostName, int portNumber, String text) {
         super(Lane.Second);
@@ -37,8 +38,9 @@ public class Client extends LaneThread implements Observer {
                 BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
                 setMessage("Sending input...");
                 Circle outgoing = new Circle(true, true, lane, text);
+                outgoing.standStill(60);
                 outgoing.addObserver(this);
-                while (!arrived) {
+                while (!circleDone) {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
@@ -46,20 +48,23 @@ public class Client extends LaneThread implements Observer {
                     }
                 }
                 output.println(text);
-                arrived = false;
+                circleArrived = false;
+                circleDone = false;
                 output.flush();
                 setMessage("Awaiting result...");
                 String result = input.readLine();
                 Circle incoming = new Circle(false, true, lane, result);
+                incoming.standStill(60);
                 incoming.addObserver(this);
-                while (!arrived) {
+                while (!circleDone) {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
                         //busywaiting
                     }
                 }
-                arrived = false;
+                circleArrived = false;
+                circleDone = false;
                 setMessage("Connection closed.");
             } catch (IOException e) {
                 if (server.isClosed()) {
@@ -84,15 +89,14 @@ public class Client extends LaneThread implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (((Circle)o).hasArrived()) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                arrived = true;
-                ((Circle) o).delete();
-            }
+        Circle circle = (Circle) o;
+        if (circleArrived && !circle.isStandingStill()) {
+            circle.delete();
+            circleDone = true;
+        }
+        if (circle.hasArrived()) {
+            circle.standStill(60);
+            circleArrived = true;
         }
     }
 }

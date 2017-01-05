@@ -17,7 +17,8 @@ import java.util.Observer;
  * Class representing the connection from server to client. Is threaded.
  */
 public class Server extends LaneThread implements Observer {
-    private boolean arrived = false;
+    private boolean circleDone = false;
+    private boolean circleArrived = false;
     private int port;
 
     public Server(int port, Lane lane) {
@@ -56,26 +57,30 @@ public class Server extends LaneThread implements Observer {
             String text = input.readLine();
             Circle incoming = new Circle(false, false, lane, text);
             incoming.addObserver(this);
-            while (!arrived) {
+            incoming.standStill(60);
+            while (!circleDone) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     //busywaiting
                 }
             }
-            arrived = false;
+            circleArrived = false;
+            circleDone = false;
             setMessage("Sending output...");
             String reverseText = new StringBuilder(text).reverse().toString();
             Circle outgoing = new Circle(true, false, lane, reverseText);
             outgoing.addObserver(this);
-            while (!arrived) {
+            outgoing.standStill(60);
+            while (!circleDone) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     //busywaiting
                 }
             }
-            arrived = false;
+            circleArrived = false;
+            circleDone = false;
             output.println(reverseText);
             output.flush();
             setMessage("Awaiting connection...");
@@ -101,15 +106,14 @@ public class Server extends LaneThread implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if (((Circle)o).hasArrived()) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                arrived = true;
-                ((Circle) o).delete();
-            }
+        Circle circle = (Circle) o;
+        if (circleArrived && !circle.isStandingStill()) {
+            circle.delete();
+            circleDone = true;
+        }
+        if (circle.hasArrived()) {
+            circle.standStill(60);
+            circleArrived = true;
         }
     }
 }

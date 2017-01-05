@@ -16,6 +16,7 @@ public class Circle extends Observable {
     private String text;
     private boolean hasArrived = false;
     private boolean toDelete = false;
+    private int standStillTicks = 0;
 
     //Create a circle with the appropriate direction, lane, speed, goal and text
     public Circle(boolean outgoing, boolean client, Lane lane, String text) {
@@ -109,8 +110,22 @@ public class Circle extends Observable {
         return toDelete;
     }
 
+    public boolean isStandingStill() {
+        return standStillTicks == 0;
+    }
+
+    public void standStill(int ticks) {
+        standStillTicks += ticks;
+    }
+
     //Update the position of the circle by adding its speed to its current XPos
     public void update() {
+        if (standStillTicks > 0) {
+            standStillTicks--;
+            setChanged();
+            notifyObservers();
+            return;
+        }
         if (getSpeed() >= 0) {
             if (getX() + getSpeed() >= getGoalX()) {
                 setHasArrived();

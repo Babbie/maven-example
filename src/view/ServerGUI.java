@@ -35,21 +35,18 @@ public class ServerGUI implements ThreadListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisServer.start(Lane.First);
-                StartLane1.setEnabled(false);
             }
         });
         StartLane2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisServer.start(Lane.Second);
-                StartLane1.setEnabled(false);
             }
         });
         StartLane3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisServer.start(Lane.Third);
-                StartLane1.setEnabled(false);
             }
         });
     }
