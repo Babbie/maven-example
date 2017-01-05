@@ -45,7 +45,7 @@ public class ServerGUI implements ThreadListener {
                 StartLane1.setEnabled(false);
             }
         });
-        StartLane2.addActionListener(new ActionListener() {
+        StartLane3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisServer.start(Lane.Third);
@@ -86,8 +86,8 @@ public class ServerGUI implements ThreadListener {
                 StartLane2.setEnabled(laneThread.isDone());
                 break;
             case Third:
-                Lane2.setText(laneThread.getMessage());
-                StartLane2.setEnabled(laneThread.isDone());
+                Lane3.setText(laneThread.getMessage());
+                StartLane3.setEnabled(laneThread.isDone());
                 break;
         }
     }
