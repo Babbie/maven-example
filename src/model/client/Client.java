@@ -93,8 +93,7 @@ public class Client extends LaneThread implements Observer {
         if (circleArrived && !circle.isStandingStill()) {
             circle.delete();
             circleDone = true;
-        }
-        if (circle.hasArrived()) {
+        } else if (circle.hasArrived()) {
             circle.standStill(120);
             circleArrived = true;
         }
