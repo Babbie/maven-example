@@ -4,6 +4,8 @@ import model.server.Server;
 
 import javax.swing.*;
 
+import static main.Utility.isValidPort;
+
 /**
  * Created by Sebastian on 31-12-2016.
  */
@@ -27,22 +29,10 @@ public class ServerGUI {
         frame.setResizable(false);
 
         String port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
-        while (!validPort(port)) {
+        while (!isValidPort(port)) {
             JOptionPane.showMessageDialog(frame, "The port \"" + port + "\" is not a valid port.");
             port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
         }
         new Thread(new Server(Integer.parseInt(port))).start();
-    }
-
-    public static boolean validPort(String port) {
-        try {
-            int i = Integer.parseInt(port);
-            if ((i < 1024) || (i > 65535)) {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return true;
     }
 }

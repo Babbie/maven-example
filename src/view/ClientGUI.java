@@ -5,8 +5,10 @@ import model.client.Client;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
+
+import static main.Utility.isValidIP;
+import static main.Utility.isValidPort;
 
 /**
  * Created by Sebastian on 2-1-2017.
@@ -40,12 +42,12 @@ public class ClientGUI {
 
     public static void start() {
         String ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
-        while (!validIP(ip)) {
+        while (!isValidIP(ip)) {
             JOptionPane.showMessageDialog(frame, "The IP \"" + ip + "\" is not a valid IP.");
             ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
         }
         String port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
-        while (!validPort(port)) {
+        while (!isValidPort(port)) {
             JOptionPane.showMessageDialog(frame, "The port \"" + port + "\" is not a valid port.");
             port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
         }
@@ -57,47 +59,5 @@ public class ClientGUI {
         }
     }
 
-    public static boolean validIP(String ip) {
-        if (ip.equals("localhost")) {
-            return true;
-        }
 
-        if (ip.isEmpty()) {
-            return false;
-        }
-
-        if (ip.endsWith(".")) {
-            return false;
-        }
-
-        String[] parts = ip.split("\\.");
-        if (parts.length != 4) {
-            return false;
-        }
-
-        try {
-            for (String s : parts) {
-                int i = Integer.parseInt(s);
-                if ((i < 0) || (i > 255)) {
-                    return false;
-                }
-            }
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static boolean validPort(String port) {
-        try {
-            int i = Integer.parseInt(port);
-            if ((i < 1024) || (i > 65535)) {
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return true;
-    }
 }
