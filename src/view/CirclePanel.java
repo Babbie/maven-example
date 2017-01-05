@@ -62,7 +62,7 @@ public abstract class CirclePanel extends JPanel implements ActionListener {
                 g.fillOval((circle.getX() - (circle.getOvalWidth()/2)), (circle.getY() - (circle.getRadius()/2)), circle.getOvalWidth(), circle.getRadius());
                 g.setColor(Color.BLACK);
                 g.drawOval((circle.getX() - (circle.getOvalWidth()/2)), (circle.getY() - (circle.getRadius()/2)), circle.getOvalWidth(), circle.getRadius());
-                drawCenteredText(g, circle.getX() + (circle.getOvalWidth()), circle.getY(), 30f, circle.getText());
+                drawCenteredText(g, circle.getX() - (circle.getOvalWidth()), circle.getY(), 30f, circle.getText());
             }
         } catch (IOException e) {
             e.printStackTrace();
