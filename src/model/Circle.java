@@ -127,13 +127,13 @@ public class Circle extends Observable {
             return;
         }
         if (getSpeed() >= 0) {
-            if (getX() + getSpeed() >= getGoalX()) {
+            if (getX() + getSpeed() > getGoalX()) {
                 setHasArrived();
             } else {
                 setX(getX() + getSpeed());
             }
         } else {
-            if (getX() + getSpeed() <= getGoalX()) {
+            if (getX() + getSpeed() < getGoalX()) {
                 setHasArrived();
             } else {
                 setX(getX() + getSpeed());
