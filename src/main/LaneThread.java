@@ -4,7 +4,8 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * Created by Bab on 5-1-2017.
+ * An abstract class providing functionality for the server and client, making it so
+ * that the GUI can obtain information by registering as a listener.
  */
 public abstract class LaneThread extends Thread {
     private Set<ThreadListener> listeners = new CopyOnWriteArraySet<>();
@@ -43,6 +44,9 @@ public abstract class LaneThread extends Thread {
         return lane;
     }
 
+    /**
+     * Wrapper for doRun
+     */
     @Override
     public void run() {
         try {
@@ -52,6 +56,8 @@ public abstract class LaneThread extends Thread {
             notifyListeners();
         }
     }
-
+    /**
+     * This method will be run when the thread is started and contains the main functionality.
+     */
     public abstract void doRun();
 }

@@ -13,6 +13,9 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Class representing the connection from server to client. Is threaded.
+ */
 public class Server extends LaneThread implements Observer {
     private boolean arrived = false;
     private int port;
@@ -23,15 +26,7 @@ public class Server extends LaneThread implements Observer {
     }
 
     /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
+     * This method will be run when the thread is started and contains the main functionality.
      */
     @Override
     public void doRun() {
@@ -49,6 +44,10 @@ public class Server extends LaneThread implements Observer {
         }
     }
 
+    /**
+     * Handles the main communication with the client.
+     * @param client the client.
+     */
     private void doCommunication(Socket client) {
         try {
             PrintStream output = new PrintStream(client.getOutputStream());

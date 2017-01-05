@@ -1,7 +1,8 @@
 package main;
 
 /**
- * Created by Bab on 5-1-2017.
+ * Simple interface forcing implementation of threadUpdate, notifying the implementer of changes
+ * in the threads they are subscribed to. To subscribe, use LaneThread#addListener(ThreadListener).
  */
 public interface ThreadListener {
     void threadUpdate(LaneThread laneThread);

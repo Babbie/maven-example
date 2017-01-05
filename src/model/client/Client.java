@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Class representing the connection from client to server. Is threaded.
+ */
 public class Client extends LaneThread implements Observer {
     private String hostName;
     private int portNumber;
@@ -22,6 +25,9 @@ public class Client extends LaneThread implements Observer {
         this.text = text;
     }
 
+    /**
+     * This method will be run when the thread is started and contains the main functionality.
+     */
     @Override
     public void doRun() {
         setMessage("Connecting...");

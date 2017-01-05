@@ -1,7 +1,7 @@
 package main;
 
 /**
- * Created by Bab on 5-1-2017.
+ * Collection of static utility methods.
  */
 public abstract class Utility {
     public static boolean isValidIP(String ip) {

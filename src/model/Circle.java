@@ -47,9 +47,9 @@ public class Circle extends Observable {
         CircleList.addCircle(this);
     }
 
-    /*
-    Used to calculate the width of the oval. About 8 characters fit in an oval of width of 140.
-    For each multiple of 8 the width will be increased
+    /**
+     * Used to calculate the width of the oval. About 8 characters fit in an oval of width of 140.
+     * For each multiple of 8 the width will be increased
      */
     public int getOvalWidth(){
         int width = (int) Math.ceil(radius * (text.length()/8f));
