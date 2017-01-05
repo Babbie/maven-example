@@ -1,10 +1,11 @@
 package view;
 
 /**
- * Created by Bab on 2-1-2017.
+ * Panel used by the client extending CirclePanel. This class makes sure the correct background is drawn
  */
 public class ClientPanel extends CirclePanel {
     public ClientPanel() {
+        super();
         bgName = "ClientPanel.png";
     }
 }

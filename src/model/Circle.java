@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 
 /**
- * Created by Sebastian on 24-11-2016.
+ * Class representing a circle
  */
-public class Circle extends Observable implements ActionListener {
+public class Circle extends Observable {
     private int x;
     private Lane lane;
     private int radius;
@@ -17,6 +17,7 @@ public class Circle extends Observable implements ActionListener {
     private boolean hasArrived = false;
     private boolean toDelete = false;
 
+    //Create a circle with the appropriate direction, lane, speed, goal and text
     public Circle(boolean outgoing, boolean client, Lane lane, String text) {
         if (client) {
             if (outgoing) {
@@ -107,6 +108,7 @@ public class Circle extends Observable implements ActionListener {
         return toDelete;
     }
 
+    //Update the position of the circle by adding its speed to its current XPos
     public void update() {
         if (getSpeed() >= 0) {
             if (getX() + getSpeed() >= getGoalX()) {
@@ -123,15 +125,5 @@ public class Circle extends Observable implements ActionListener {
         }
         setChanged();
         notifyObservers();
-    }
-
-    /**
-     * Invoked when an action occurs.
-     *
-     * @param e
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        update();
     }
 }
