@@ -110,7 +110,7 @@ public class Server extends LaneThread implements Observer {
         if (circleArrived && !circle.isStandingStill()) {
             circle.delete();
             circleDone = true;
-        } else if (circle.hasArrived()) {
+        } else if (circle.hasArrived() && !circle.isStandingStill()) {
             circle.standStill(120);
             circleArrived = true;
         }

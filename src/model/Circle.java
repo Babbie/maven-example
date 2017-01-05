@@ -111,7 +111,7 @@ public class Circle extends Observable {
     }
 
     public boolean isStandingStill() {
-        return standStillTicks == 0;
+        return standStillTicks > 0;
     }
 
     public void standStill(int ticks) {
