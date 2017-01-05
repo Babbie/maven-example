@@ -30,14 +30,14 @@ public class Circle extends Observable {
                 this.goalX = -radius*2;
                 this.speed = -10;
             } else {
-                this.x = -2*radius;
-                this.goalX = 450+radius*2;
+                this.x = -2*radius-100;
+                this.goalX = 450-radius*2;
                 this.speed = 10;
             }
         } else {
             if (outgoing) {
                 this.x = 0;
-                this.goalX = 400;
+                this.goalX = 400+radius*2;
                 this.speed = 10;
             } else {
                 this.x = 600;
