@@ -38,12 +38,14 @@ public class Server extends LaneThread implements Observer {
         try {
             ServerSocket server = new ServerSocket(port);
             setMessage("Awaiting connection...");
+
+            //noinspection InfiniteLoopStatement
             while (true) {
                 Socket client = server.accept();
                 doCommunication(client);
             }
         } catch (IOException e) {
-            setMessage("Connection error.\nSocket closed.");
+            setMessage("Error.\nSocket closed.");
         }
     }
 
@@ -51,7 +53,7 @@ public class Server extends LaneThread implements Observer {
         try {
             PrintStream output = new PrintStream(client.getOutputStream());
             BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            setMessage("Connected. Awaiting input...");
+            setMessage("Awaiting input...");
             String text = input.readLine();
             Circle incoming = new Circle(false, false, lane, text);
             incoming.addObserver(this);
@@ -77,9 +79,9 @@ public class Server extends LaneThread implements Observer {
             arrived = false;
             output.println(reverseText);
             output.flush();
-            setMessage("Completed.\nAwaiting connection...");
+            setMessage("Awaiting connection...");
         } catch (IOException e) {
-            setMessage("Disconnected.\nAwaiting connection...");
+            setMessage("Awaiting connection...");
         } finally {
             try {
                 client.close();
@@ -101,15 +103,13 @@ public class Server extends LaneThread implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (((Circle)o).hasArrived()) {
-            synchronized (o) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    arrived = true;
-                    ((Circle) o).delete();
-                }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                arrived = true;
+                ((Circle) o).delete();
             }
         }
     }
