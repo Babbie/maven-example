@@ -1,18 +1,24 @@
 package model.server;
 
-import model.Lane;
+import main.LaneThread;
+import model.Circle;
+import main.Lane;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Server implements Runnable {
-    private boolean stopped = false;
-    private static int threadCount = 0;
-    private static int port;
-    private static Object lock = new Object();
+public class Server extends LaneThread implements Observer {
+    private boolean arrived = false;
+    private int port;
 
-    public Server(int port) {
+    public Server(int port, Lane lane) {
+        super(lane);
         this.port = port;
     }
 
@@ -28,55 +34,83 @@ public class Server implements Runnable {
      * @see Thread#run()
      */
     @Override
-    public synchronized void run() {
-        while (!isStopped()) {
-            try {
-                ServerSocket server = new ServerSocket(port + getThreadCount());
+    public void doRun() {
+        try {
+            ServerSocket server = new ServerSocket(port);
+            setMessage("Awaiting connection...");
+            while (true) {
                 Socket client = server.accept();
-                System.out.println("checking threads");
-                if (!threadsAreFull()) {
-                    System.out.println("adding thread");
-                    addThread();
-                    System.out.println("running thread");
-                    new Thread(new ServerThread(client, Lane.values()[getThreadCount()])).start();
-                } else {
-                    client.close();
+                doCommunication(client);
+            }
+        } catch (IOException e) {
+            setMessage("Connection error.\nSocket closed.");
+        }
+    }
+
+    private void doCommunication(Socket client) {
+        try {
+            PrintStream output = new PrintStream(client.getOutputStream());
+            BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            setMessage("Connected. Awaiting input...");
+            String text = input.readLine();
+            Circle incoming = new Circle(false, false, lane, text);
+            incoming.addObserver(this);
+            while (!arrived) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    //busywaiting
                 }
+            }
+            arrived = false;
+            setMessage("Sending output...");
+            String reverseText = new StringBuilder(text).reverse().toString();
+            Circle outgoing = new Circle(true, false, lane, reverseText);
+            outgoing.addObserver(this);
+            while (!arrived) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    //busywaiting
+                }
+            }
+            arrived = false;
+            output.println(reverseText);
+            output.flush();
+            setMessage("Completed.\nAwaiting connection...");
+        } catch (IOException e) {
+            setMessage("Disconnected.\nAwaiting connection...");
+        } finally {
+            try {
+                client.close();
             } catch (IOException e) {
-                throw new RuntimeException("Error accepting connection", e);
+                //Nothing, client is closed
             }
         }
     }
 
-    public static void addThread() {
-        synchronized (lock) {
-            threadCount++;
+    /**
+     * This method is called whenever the observed object is changed. An
+     * application calls an <tt>Observable</tt> object's
+     * <code>notifyObservers</code> method to have all the object's
+     * observers notified of the change.
+     *
+     * @param o   the observable object.
+     * @param arg an argument passed to the <code>notifyObservers</code>
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (((Circle)o).hasArrived()) {
+            synchronized (o) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    arrived = true;
+                    ((Circle) o).delete();
+                }
+            }
         }
-    }
-
-    public static void removeThread() {
-        synchronized (lock) {
-            threadCount--;
-        }
-    }
-
-    public static int getThreadCount() {
-        synchronized (lock) {
-            return threadCount;
-        }
-    }
-
-    public static boolean threadsAreFull() {
-        synchronized (lock) {
-            return threadCount == 2;
-        }
-    }
-
-    private synchronized boolean isStopped() {
-        return stopped;
-    }
-
-    public synchronized void stop() {
-        stopped = true;
     }
 }

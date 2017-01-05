@@ -1,5 +1,7 @@
 package view;
 
+import main.LaneThread;
+import main.ThreadListener;
 import model.client.Client;
 
 import javax.swing.*;
@@ -13,7 +15,7 @@ import static main.Utility.isValidPort;
 /**
  * Created by Sebastian on 2-1-2017.
  */
-public class ClientGUI {
+public class ClientGUI implements ThreadListener {
     private static JFrame frame;
     private JPanel panel1;
     private JTextField ClientLane;
@@ -21,12 +23,13 @@ public class ClientGUI {
     private JPanel TextPanel;
     private JButton StartClient;
 
-    private ClientGUI() {
+    private ClientGUI(){
+        ClientGUI thisClient = this;
         StartClient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ClientGUI.start();
-                StartClient.setVisible(false);
+                thisClient.start();
+                StartClient.setEnabled(false);
             }
         });
     }
@@ -40,7 +43,7 @@ public class ClientGUI {
         frame.setResizable(false);
     }
 
-    public static void start() {
+    private void start() {
         String ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
         while (!isValidIP(ip)) {
             JOptionPane.showMessageDialog(frame, "The IP \"" + ip + "\" is not a valid IP.");
@@ -52,12 +55,14 @@ public class ClientGUI {
             port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
         }
         String text = JOptionPane.showInputDialog(frame, "Enter the text to submit.", "", JOptionPane.QUESTION_MESSAGE);
-        try {
-            new Thread(new Client(ip, Integer.parseInt(port), text)).start();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Failed to start client, shutting down...");
-        }
+        Client clientThread = new Client(ip, Integer.parseInt(port), text);
+        clientThread.start();
+        clientThread.addListener(this);
     }
 
-
+    @Override
+    public void threadUpdate(LaneThread laneThread) {
+        ClientLane.setText(laneThread.getMessage());
+        StartClient.setEnabled(laneThread.isDone());
+    }
 }

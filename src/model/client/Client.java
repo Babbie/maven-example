@@ -1,7 +1,8 @@
 package model.client;
 
+import main.LaneThread;
 import model.Circle;
-import model.Lane;
+import main.Lane;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,36 +12,28 @@ import java.util.Observer;
 /**
  * Created by Bab on 30-11-2016.
  */
-public class Client implements Runnable, Observer {
+public class Client extends LaneThread implements Observer {
     private String hostName;
     private int portNumber;
     private String text;
     private boolean arrived = false;
 
-    public Client(String hostName, int portNumber, String text) throws IOException {
+    public Client(String hostName, int portNumber, String text) {
+        super(Lane.Second);
         this.hostName = hostName;
         this.portNumber = portNumber;
         this.text = text;
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
     @Override
-    public void run() {
+    public void doRun() {
+        setMessage("Connecting...");
         try (Socket server = new Socket(hostName, portNumber)) {
             try {
                 PrintStream output = new PrintStream(server.getOutputStream());
                 BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-                Circle outgoing = new Circle(true, true, Lane.Second, text);
+                setMessage("Connected.\nSending input...");
+                Circle outgoing = new Circle(true, true, lane, text);
                 outgoing.addObserver(this);
                 while (!arrived) {
                     try {
@@ -52,9 +45,9 @@ public class Client implements Runnable, Observer {
                 output.println(text);
                 arrived = false;
                 output.flush();
-                System.out.println("awaiting result");
+                setMessage("Awaiting result...");
                 String result = input.readLine();
-                Circle incoming = new Circle(false, true, Lane.Second, result);
+                Circle incoming = new Circle(false, true, lane, result);
                 incoming.addObserver(this);
                 while (!arrived) {
                     try {
@@ -64,15 +57,16 @@ public class Client implements Runnable, Observer {
                     }
                 }
                 arrived = false;
+                setMessage("Done.\nConnection closed.");
             } catch (IOException e) {
                 if (server.isClosed()) {
-                    //TODO: Status: connection dropped
+                    setMessage("Connection closed unexpectedly.");
                 } else {
-                    throw new RuntimeException("Error with connection.", e);
+                    setMessage("Connection error.");
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error connecting to host.", e);
+            setMessage("Could not connect to server.");
         }
     }
 

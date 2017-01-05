@@ -2,7 +2,6 @@ package view;
 
 import model.Circle;
 import model.CircleList;
-import model.Lane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

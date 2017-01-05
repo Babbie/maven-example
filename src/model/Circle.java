@@ -1,13 +1,13 @@
 package model;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import main.Lane;
+
 import java.util.Observable;
 
 /**
  * Created by Sebastian on 24-11-2016.
  */
-public class Circle extends Observable implements ActionListener {
+public class Circle extends Observable {
     private int x;
     private Lane lane;
     private int radius;
@@ -123,15 +123,5 @@ public class Circle extends Observable implements ActionListener {
         }
         setChanged();
         notifyObservers();
-    }
-
-    /**
-     * Invoked when an action occurs.
-     *
-     * @param e
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        update();
     }
 }

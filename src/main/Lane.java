@@ -1,4 +1,4 @@
-package model;
+package main;
 
 /**
  * Created by Bab on 29-12-2016.
