@@ -59,9 +59,9 @@ public abstract class CirclePanel extends JPanel implements ActionListener {
             //Loop over all circles and draw them. The width of the circle depends on the length of the text it holds
             for (Circle circle : CircleList.getCircleList()) {
                 g.setColor(Color.RED);
-                g.fillOval((circle.getX() + (circle.getOvalWidth()/2)), (circle.getY() - (circle.getRadius()/2)), circle.getOvalWidth(), circle.getRadius());
+                g.fillOval((circle.getX() - (circle.getOvalWidth()/2)), (circle.getY() - (circle.getRadius()/2)), circle.getOvalWidth(), circle.getRadius());
                 g.setColor(Color.BLACK);
-                g.drawOval((circle.getX() + (circle.getOvalWidth()/2)), (circle.getY() - (circle.getRadius()/2)), circle.getOvalWidth(), circle.getRadius());
+                g.drawOval((circle.getX() - (circle.getOvalWidth()/2)), (circle.getY() - (circle.getRadius()/2)), circle.getOvalWidth(), circle.getRadius());
                 drawCenteredText(g, circle.getX() + (circle.getOvalWidth()), circle.getY(), 30f, circle.getText());
             }
         } catch (IOException e) {
