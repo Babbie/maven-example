@@ -6,6 +6,6 @@ package view;
 public class ServerPanel extends CirclePanel {
     public ServerPanel() {
         super();
-        bgName = "ServerPanel.png";
+        bgName = "ProducerPanel.png";
     }
 }

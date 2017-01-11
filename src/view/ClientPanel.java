@@ -6,6 +6,6 @@ package view;
 public class ClientPanel extends CirclePanel {
     public ClientPanel() {
         super();
-        bgName = "ClientPanel.png";
+        bgName = "ConsumerPanel.png";
     }
 }
