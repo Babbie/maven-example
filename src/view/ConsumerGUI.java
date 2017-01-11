@@ -2,7 +2,7 @@ package view;
 
 import main.LaneThread;
 import main.ThreadListener;
-import model.client.Client;
+import model.consumer.Consumer;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,24 +13,23 @@ import static main.Utility.isValidPort;
 
 /**
  * Class linked to the ConsumerGUI form.
- * The class creates the JFrame, handles the input dialogs and starts the client.
+ * The class creates the JFrame, handles the input dialogs and starts the producer.
  */
 public class ConsumerGUI implements ThreadListener {
     private static JFrame frame;
     private JPanel panel1;
-    private JTextField ClientLane;
+    private JTextField textField;
     private JPanel CirclePanel;
     private JPanel TextPanel;
     private JButton StartConsumer;
     private JPanel ConsumerPanel;
 
     private ConsumerGUI(){
-        ConsumerGUI thisClient = this;
+        ConsumerGUI thisConsumer = this;
         StartConsumer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                thisClient.start();
-                StartConsumer.setEnabled(false);
+                thisConsumer.start();
             }
         });
     }
@@ -59,15 +58,15 @@ public class ConsumerGUI implements ThreadListener {
         }
         String text = JOptionPane.showInputDialog(frame, "Enter the text to submit.", "", JOptionPane.QUESTION_MESSAGE);
 
-        //Start the client thread
-        Client clientThread = new Client(ip, Integer.parseInt(port), text);
-        clientThread.start();
-        clientThread.addListener(this);
+        //Start the producer thread
+        Consumer consumerThread = new Consumer(ip, Integer.parseInt(port), text);
+        consumerThread.start();
+        consumerThread.addListener(this);
     }
 
     @Override
     public void threadUpdate(LaneThread laneThread) {
-        ClientLane.setText(laneThread.getMessage());
+        textField.setText(laneThread.getMessage());
         StartConsumer.setEnabled(laneThread.isDone());
     }
 }

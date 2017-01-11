@@ -1,5 +1,8 @@
-package model.server;
+package model.consumer;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import main.LaneThread;
 import model.Circle;
 import main.Lane;
@@ -13,16 +16,19 @@ import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
+
 /**
- * Class representing the connection from server to client. Is threaded.
+ * Class representing the connection from consumer to producer. Is threaded.
  */
-public class Server extends LaneThread implements Observer {
+public class Consumer extends LaneThread implements Observer {
     private boolean circleDone = false;
     private boolean circleArrived = false;
+    private String host;
     private int port;
 
-    public Server(int port, Lane lane) {
+    public Consumer(String host, int port, String queueName, Lane lane) {
         super(lane);
+        this.host = host;
         this.port = port;
     }
 
@@ -32,22 +38,25 @@ public class Server extends LaneThread implements Observer {
     @Override
     public void doRun() {
         try {
-            ServerSocket server = new ServerSocket(port);
-            setMessage("Awaiting connection...");
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost("localhost");
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            setMessage("Awaiting input...");
 
             //noinspection InfiniteLoopStatement
             while (true) {
                 Socket client = server.accept();
                 doCommunication(client);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setMessage("Error.\nSocket closed.");
         }
     }
 
     /**
-     * Handles the main communication with the client.
-     * @param client the client.
+     * Handles the main communication with the producer.
+     * @param client the producer.
      */
     private void doCommunication(Socket client) {
         try {
@@ -90,7 +99,7 @@ public class Server extends LaneThread implements Observer {
             try {
                 client.close();
             } catch (IOException e) {
-                //Nothing, client is closed
+                //Nothing, producer is closed
             }
         }
     }

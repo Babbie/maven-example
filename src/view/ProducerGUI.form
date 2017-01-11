@@ -26,7 +26,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="527cf" class="javax.swing.JTextField" binding="Lane2">
+          <component id="527cf" class="javax.swing.JTextField" binding="textField">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="200" height="50"/>

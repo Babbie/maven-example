@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * An abstract class providing functionality for the server and client, making it so
+ * An abstract class providing functionality for the consumer and producer, making it so
  * that the GUI can obtain information by registering as a listener.
  */
 public abstract class LaneThread extends Thread {

@@ -3,7 +3,8 @@ package view;
 import main.Lane;
 import main.LaneThread;
 import main.ThreadListener;
-import model.server.Server;
+import model.consumer.Consumer;
+import model.producer.Producer;
 
 import javax.swing.*;
 
@@ -14,39 +15,23 @@ import static main.Utility.isValidPort;
 
 /**
  * Class linked to the ProducerGUI form.
- * The class creates the JFrame, handles the input and starts the server thread
+ * The class creates the JFrame, handles the input and starts the consumer thread
  */
 public class ProducerGUI implements ThreadListener {
     private static JFrame frame;
     private JPanel panel1;
-    private JTextField Lane1;
-    private JTextField Lane2;
-    private JTextField Lane3;
+    private JTextField textField;
     private JPanel TextPanel;
-    private JButton StartLane1;
     private JButton StartProducer;
     private JPanel ProducerPanel;
-    private JButton StartLane3;
     private JPanel CirclePanel;
 
     private ProducerGUI(){
-        ProducerGUI thisServer = this;
-        StartLane1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                thisServer.start(Lane.First);
-            }
-        });
+        ProducerGUI thisProducer = this;
         StartProducer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                thisServer.start(Lane.Second);
-            }
-        });
-        StartLane3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                thisServer.start(Lane.Third);
+                thisProducer.start(Lane.Second);
             }
         });
     }
@@ -66,26 +51,14 @@ public class ProducerGUI implements ThreadListener {
             JOptionPane.showMessageDialog(frame, "The port \"" + port + "\" is not a valid port.");
             port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
         }
-        Server serverThread = new Server(Integer.parseInt(port), lane);
-        serverThread.start();
-        serverThread.addListener(this);
+        Producer producerThread = new Producer(Integer.parseInt(port), lane);
+        producerThread.start();
+        producerThread.addListener(this);
     }
 
     @Override
     public void threadUpdate(LaneThread laneThread) {
-        switch (laneThread.getLane()) {
-            case First:
-                Lane1.setText(laneThread.getMessage());
-                StartLane1.setEnabled(laneThread.isDone());
-                break;
-            case Second:
-                Lane2.setText(laneThread.getMessage());
-                StartProducer.setEnabled(laneThread.isDone());
-                break;
-            case Third:
-                Lane3.setText(laneThread.getMessage());
-                StartLane3.setEnabled(laneThread.isDone());
-                break;
-        }
+        textField.setText(laneThread.getMessage());
+        StartProducer.setEnabled(laneThread.isDone());
     }
 }

@@ -1,4 +1,4 @@
-package model.client;
+package model.producer;
 
 import main.LaneThread;
 import model.Circle;
@@ -10,16 +10,16 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Class representing the connection from client to server. Is threaded.
+ * Class representing the connection from producer to consumer. Is threaded.
  */
-public class Client extends LaneThread implements Observer {
+public class Producer extends LaneThread implements Observer {
     private String hostName;
     private int portNumber;
     private String text;
     private boolean circleDone = false;
     private boolean circleArrived = false;
 
-    public Client(String hostName, int portNumber, String text) {
+    public Producer(String hostName, int portNumber, String text) {
         super(Lane.Second);
         this.hostName = hostName;
         this.portNumber = portNumber;
