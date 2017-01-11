@@ -7,38 +7,38 @@ import model.client.Client;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import static main.Utility.isValidIP;
 import static main.Utility.isValidPort;
 
 /**
- * Class linked to the ClientGUI form.
+ * Class linked to the ConsumerGUI form.
  * The class creates the JFrame, handles the input dialogs and starts the client.
  */
-public class ClientGUI implements ThreadListener {
+public class ConsumerGUI implements ThreadListener {
     private static JFrame frame;
     private JPanel panel1;
     private JTextField ClientLane;
     private JPanel CirclePanel;
     private JPanel TextPanel;
-    private JButton StartClient;
+    private JButton StartConsumer;
+    private JPanel ConsumerPanel;
 
-    private ClientGUI(){
-        ClientGUI thisClient = this;
-        StartClient.addActionListener(new ActionListener() {
+    private ConsumerGUI(){
+        ConsumerGUI thisClient = this;
+        StartConsumer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisClient.start();
-                StartClient.setEnabled(false);
+                StartConsumer.setEnabled(false);
             }
         });
     }
 
     //Method called on initialization of the frame
     public static void init() {
-        frame = new JFrame("ClientGUI");
-        frame.setContentPane(new ClientGUI().panel1);
+        frame = new JFrame("ConsumerGUI");
+        frame.setContentPane(new ConsumerGUI().panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -68,6 +68,6 @@ public class ClientGUI implements ThreadListener {
     @Override
     public void threadUpdate(LaneThread laneThread) {
         ClientLane.setText(laneThread.getMessage());
-        StartClient.setEnabled(laneThread.isDone());
+        StartConsumer.setEnabled(laneThread.isDone());
     }
 }

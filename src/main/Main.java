@@ -1,7 +1,7 @@
 package main;
 
-import view.ClientGUI;
-import view.ServerGUI;
+import view.ConsumerGUI;
+import view.ProducerGUI;
 
 import javax.swing.*;
 
@@ -13,9 +13,9 @@ public class Main {
             JOptionPane.showMessageDialog(frame, "Start the program with command line argument server or client.");
             System.exit(1);
         } else if (args[0].equals("client")) {
-            ClientGUI.init();
+            ConsumerGUI.init();
         } else if (args[0].equals("server")) {
-            ServerGUI.init();
+            ProducerGUI.init();
         }
     }
 }

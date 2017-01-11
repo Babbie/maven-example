@@ -9,13 +9,10 @@ import javax.swing.*;
 public class GUITest {
     private JPanel panel1;
     private JPanel TextPanel;
-    private JTextField Lane1;
-    private JTextField Lane2;
-    private JTextField Lane3;
     private JPanel CirclePanel;
-    private JButton StartStopLane3;
-    private JButton StartStopLane2;
-    private JButton StartStopLane1;
+    private JTextField textField1;
+    private JButton StartProducer;
+    private JPanel ProducerPanel;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("GUITest");

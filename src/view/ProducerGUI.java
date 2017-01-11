@@ -9,15 +9,14 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import static main.Utility.isValidPort;
 
 /**
- * Class linked to the ServerGUI form.
+ * Class linked to the ProducerGUI form.
  * The class creates the JFrame, handles the input and starts the server thread
  */
-public class ServerGUI implements ThreadListener {
+public class ProducerGUI implements ThreadListener {
     private static JFrame frame;
     private JPanel panel1;
     private JTextField Lane1;
@@ -25,19 +24,20 @@ public class ServerGUI implements ThreadListener {
     private JTextField Lane3;
     private JPanel TextPanel;
     private JButton StartLane1;
-    private JButton StartLane2;
+    private JButton StartProducer;
+    private JPanel ProducerPanel;
     private JButton StartLane3;
     private JPanel CirclePanel;
 
-    private ServerGUI(){
-        ServerGUI thisServer = this;
+    private ProducerGUI(){
+        ProducerGUI thisServer = this;
         StartLane1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisServer.start(Lane.First);
             }
         });
-        StartLane2.addActionListener(new ActionListener() {
+        StartProducer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 thisServer.start(Lane.Second);
@@ -52,8 +52,8 @@ public class ServerGUI implements ThreadListener {
     }
 
     public static void init() {
-        frame = new JFrame("ServerGUI");
-        frame.setContentPane(new ServerGUI().panel1);
+        frame = new JFrame("ProducerGUI");
+        frame.setContentPane(new ProducerGUI().panel1);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -80,7 +80,7 @@ public class ServerGUI implements ThreadListener {
                 break;
             case Second:
                 Lane2.setText(laneThread.getMessage());
-                StartLane2.setEnabled(laneThread.isDone());
+                StartProducer.setEnabled(laneThread.isDone());
                 break;
             case Third:
                 Lane3.setText(laneThread.getMessage());
