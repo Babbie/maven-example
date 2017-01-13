@@ -12,9 +12,9 @@ public class Main {
             JFrame frame = new JFrame("");
             JOptionPane.showMessageDialog(frame, "Start the program with command line argument consumer or producer.");
             System.exit(1);
-        } else if (args[0].equals("producer")) {
-            ConsumerGUI.init();
         } else if (args[0].equals("consumer")) {
+            ConsumerGUI.init();
+        } else if (args[0].equals("producer")) {
             ProducerGUI.init();
         }
     }
