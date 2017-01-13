@@ -19,12 +19,22 @@ public class Circle extends Observable {
     private int standStillTicks = 0;
 
     //Create a circle with the appropriate direction, lane, speed, goal and text
-    public Circle(boolean outgoing, boolean client, Lane lane, String text) {
+    public Circle(boolean outgoing, boolean producer, Lane lane, String text) {
         this.radius = 140;
         this.lane = lane;
         this.text = text;
 
-        if (client) {
+        if (producer) {
+            if (outgoing) {
+                this.x = radius;
+                this.goalX = 450+radius;
+                this.speed = 10;
+            } else {
+                this.x = 450+radius;
+                this.goalX = -radius;
+                this.speed = -10;
+            }
+        } else {
             if (outgoing) {
                 this.x = 450-radius;
                 this.goalX = -radius;
@@ -33,16 +43,6 @@ public class Circle extends Observable {
                 this.x = -radius;
                 this.goalX = 450-radius;
                 this.speed = 10;
-            }
-        } else {
-            if (outgoing) {
-                this.x = radius;
-                this.goalX = 450+radius;
-                this.speed = 10;
-            } else {
-                this.x = 450+radius;
-                this.goalX = radius;
-                this.speed = -10;
             }
         }
 
