@@ -1,18 +1,11 @@
 package model.consumer;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 import main.LaneThread;
 import model.Circle;
 import main.Lane;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,8 +19,8 @@ public class Consumer extends LaneThread implements Observer {
     private String host;
     private int port;
 
-    public Consumer(String host, int port, String queueName, Lane lane) {
-        super(lane);
+    public Consumer(String host, int port) {
+        super(Lane.Second);
         this.host = host;
         this.port = port;
     }
@@ -39,69 +32,53 @@ public class Consumer extends LaneThread implements Observer {
     public void doRun() {
         try {
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("localhost");
+            factory.setHost(host);
+            factory.setPort(port);
             Connection connection = factory.newConnection();
-            Channel channel = connection.createChannel();
+            final Channel channel = connection.createChannel();
+            channel.queueDeclare("reversequeue", false, false, true, null);
+            // Accept only one at a time
+            channel.basicQos(1);
             setMessage("Awaiting input...");
+
+            com.rabbitmq.client.Consumer consumer = new DefaultConsumer(channel) {
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                    reverseString(new String(body));
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                }
+            };
+            channel.basicConsume("reversequeue", consumer);
 
             //noinspection InfiniteLoopStatement
             while (true) {
-                Socket client = server.accept();
-                doCommunication(client);
+                Thread.sleep(1);
             }
         } catch (Exception e) {
-            setMessage("Error.\nSocket closed.");
+            setMessage("Error.\nConsumer closed.");
         }
     }
 
     /**
-     * Handles the main communication with the producer.
-     * @param client the producer.
+     * Handles the computation of the reverse string.
+     * @param input the input to reverse.
      */
-    private void doCommunication(Socket client) {
-        try {
-            PrintStream output = new PrintStream(client.getOutputStream());
-            BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            setMessage("Awaiting input...");
-            String text = input.readLine();
-            Circle incoming = new Circle(false, false, lane, text);
-            incoming.addObserver(this);
-            incoming.standStill(120);
-            while (!circleDone) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    //busywaiting
-                }
-            }
-            circleArrived = false;
-            circleDone = false;
-            setMessage("Sending output...");
-            String reverseText = new StringBuilder(text).reverse().toString();
-            Circle outgoing = new Circle(true, false, lane, reverseText);
-            outgoing.addObserver(this);
-            outgoing.standStill(120);
-            while (!circleDone) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    //busywaiting
-                }
-            }
-            circleArrived = false;
-            circleDone = false;
-            output.println(reverseText);
-            output.flush();
-            setMessage("Awaiting connection...");
-        } catch (IOException e) {
-            setMessage("Awaiting connection...");
-        } finally {
+    private void reverseString(String input) {
+        String text = input.substring(3);
+        Circle incoming = new Circle(false, false, lane, text);
+        incoming.addObserver(this);
+        incoming.standStill(120);
+        while (!circleDone) {
             try {
-                client.close();
-            } catch (IOException e) {
-                //Nothing, producer is closed
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                //busywaiting
             }
         }
+        circleArrived = false;
+        circleDone = false;
+        String reverseText = new StringBuilder(input).reverse().toString();
+        setMessage("Output: " + reverseText);
     }
 
     /**

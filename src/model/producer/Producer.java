@@ -1,11 +1,12 @@
 package model.producer;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import main.Lane;
 import main.LaneThread;
 import model.Circle;
-import main.Lane;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,16 +14,16 @@ import java.util.Observer;
  * Class representing the connection from producer to consumer. Is threaded.
  */
 public class Producer extends LaneThread implements Observer {
-    private String hostName;
-    private int portNumber;
+    private String host;
+    private int port;
     private String text;
     private boolean circleDone = false;
     private boolean circleArrived = false;
 
-    public Producer(String hostName, int portNumber, String text) {
+    public Producer(String host, int port, String text) {
         super(Lane.Second);
-        this.hostName = hostName;
-        this.portNumber = portNumber;
+        this.host = host;
+        this.port = port;
         this.text = text;
     }
 
@@ -32,49 +33,36 @@ public class Producer extends LaneThread implements Observer {
     @Override
     public void doRun() {
         setMessage("Connecting...");
-        try (Socket server = new Socket(hostName, portNumber)) {
-            try {
-                PrintStream output = new PrintStream(server.getOutputStream());
-                BufferedReader input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-                setMessage("Sending input...");
-                Circle outgoing = new Circle(true, true, lane, text);
-                outgoing.standStill(120);
-                outgoing.addObserver(this);
-                while (!circleDone) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        //busywaiting
-                    }
-                }
-                output.println(text);
-                circleArrived = false;
-                circleDone = false;
-                output.flush();
-                setMessage("Awaiting result...");
-                String result = input.readLine();
-                Circle incoming = new Circle(false, true, lane, result);
-                incoming.standStill(120);
-                incoming.addObserver(this);
-                while (!circleDone) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        //busywaiting
-                    }
-                }
-                circleArrived = false;
-                circleDone = false;
-                setMessage("Connection closed.");
-            } catch (IOException e) {
-                if (server.isClosed()) {
-                    setMessage("Connection closed.");
-                } else {
-                    setMessage("Connection error.");
+        Connection connection = null;
+        Channel channel = null;
+        try {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(host);
+            factory.setPort(port);
+            connection = factory.newConnection();
+            channel = connection.createChannel();
+            channel.queueDeclare("reversequeue", false, false, true, null);
+
+            setMessage("Sending 5 inputs...");
+            Circle outgoing = new Circle(true, true, lane, text);
+            outgoing.standStill(120);
+            outgoing.addObserver(this);
+            while (!circleDone) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    //busywaiting
                 }
             }
-        } catch (IOException e) {
-            setMessage("Could not connect.");
+            circleArrived = false;
+            circleDone = false;
+
+            for (int i = 1; i <= 5; i++) {
+                channel.basicPublish("", "reversequeue", null, (i + ": " + text).getBytes());
+            }
+            setMessage("Connection closed.");
+        } catch (Exception e) {
+            setMessage("Error\nProducer closed.");
         }
     }
 

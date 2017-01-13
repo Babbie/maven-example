@@ -3,14 +3,13 @@ package view;
 import main.Lane;
 import main.LaneThread;
 import main.ThreadListener;
-import model.consumer.Consumer;
 import model.producer.Producer;
 
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static main.Utility.isValidIP;
 import static main.Utility.isValidPort;
 
 /**
@@ -45,12 +44,19 @@ public class ProducerGUI implements ThreadListener {
     }
 
     private void start(Lane lane) {
-        String port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
+        String ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
+        while (!isValidIP(ip)) {
+            JOptionPane.showMessageDialog(frame, "The IP \"" + ip + "\" is not a valid IP.");
+            ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
+        }
+        String port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535). RabbitMQ default is 5672.", "", JOptionPane.QUESTION_MESSAGE);
         while (!isValidPort(port)) {
             JOptionPane.showMessageDialog(frame, "The port \"" + port + "\" is not a valid port.");
-            port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
+            port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535). RabbitMQ default is 5672.", "", JOptionPane.QUESTION_MESSAGE);
         }
-        Producer producerThread = new Producer(Integer.parseInt(port), lane);
+        String text = JOptionPane.showInputDialog(frame, "Enter the text to submit.", "", JOptionPane.QUESTION_MESSAGE);
+
+        Producer producerThread = new Producer(ip, Integer.parseInt(port), text);
         producerThread.start();
         producerThread.addListener(this);
     }

@@ -50,15 +50,14 @@ public class ConsumerGUI implements ThreadListener {
             JOptionPane.showMessageDialog(frame, "The IP \"" + ip + "\" is not a valid IP.");
             ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
         }
-        String port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
+        String port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535). RabbitMQ default is 5672.", "", JOptionPane.QUESTION_MESSAGE);
         while (!isValidPort(port)) {
             JOptionPane.showMessageDialog(frame, "The port \"" + port + "\" is not a valid port.");
-            port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535).", "", JOptionPane.QUESTION_MESSAGE);
+            port = JOptionPane.showInputDialog(frame, "Enter the port to connect to (1025-65535). RabbitMQ default is 5672.", "", JOptionPane.QUESTION_MESSAGE);
         }
-        String text = JOptionPane.showInputDialog(frame, "Enter the text to submit.", "", JOptionPane.QUESTION_MESSAGE);
 
         //Start the producer thread
-        Consumer consumerThread = new Consumer(ip, Integer.parseInt(port), text);
+        Consumer consumerThread = new Consumer(ip, Integer.parseInt(port));
         consumerThread.start();
         consumerThread.addListener(this);
     }
