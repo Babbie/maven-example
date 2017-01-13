@@ -65,7 +65,7 @@ public class Consumer extends LaneThread implements Observer {
      */
     private void reverseString(String input) {
         String text = input.substring(3);
-        Circle incoming = new Circle(false, false, lane, text);
+        Circle incoming = new Circle(false, false, lane, input);
         incoming.addObserver(this);
         incoming.standStill(120);
         while (!circleDone) {
@@ -77,7 +77,7 @@ public class Consumer extends LaneThread implements Observer {
         }
         circleArrived = false;
         circleDone = false;
-        String reverseText = new StringBuilder(input).reverse().toString();
+        String reverseText = new StringBuilder(text).reverse().toString();
         setMessage("Output: " + reverseText);
     }
 
