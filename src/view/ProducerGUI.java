@@ -24,7 +24,6 @@ public class ProducerGUI implements ThreadListener {
     private JPanel TextPanel;
     private JButton StartProducer;
     private JPanel ProducerPanel;
-    private JPanel CirclePanel;
 
     private ProducerGUI(){
         ProducerGUI thisProducer = this;

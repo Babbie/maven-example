@@ -19,7 +19,6 @@ public class ConsumerGUI implements ThreadListener {
     private static JFrame frame;
     private JPanel panel1;
     private JTextField textField;
-    private JPanel CirclePanel;
     private JPanel TextPanel;
     private JButton StartConsumer;
     private JPanel ConsumerPanel;

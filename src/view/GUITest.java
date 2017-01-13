@@ -9,7 +9,6 @@ import javax.swing.*;
 public class GUITest {
     private JPanel panel1;
     private JPanel TextPanel;
-    private JPanel CirclePanel;
     private JTextField textField1;
     private JButton StartProducer;
     private JPanel ProducerPanel;
