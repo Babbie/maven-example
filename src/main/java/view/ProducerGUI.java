@@ -34,6 +34,7 @@ public class ProducerGUI implements ThreadListener {
         });
     }
 
+    //Method called on initialization of the frame
     public static void init() {
         frame = new JFrame("ProducerGUI");
         frame.setContentPane(new ProducerGUI().panel1);
@@ -43,6 +44,7 @@ public class ProducerGUI implements ThreadListener {
         frame.setResizable(false);
     }
 
+    //Method called on pressing the start button. It takes care of all of the input dialogs
     private void start(Lane lane) {
         String ip = JOptionPane.showInputDialog(frame, "Enter the IP to connect to.", "", JOptionPane.QUESTION_MESSAGE);
         while (!isValidIP(ip)) {
